@@ -8,7 +8,8 @@ local:
 
 amazon:
   service: S3
-  access_key_id:     <%= ENV['AWS_ACCESS_KEY_ID'] %>
-  secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
-  region:            <%= ENV['AWS_REGION'] %>
-  bucket:            <%= ENV['AWS_BUCKET'] %>
+  access_key_id:     <%= CGI.unescape(URI.parse(ENV['S3_DATA_URL']).user) %>
+  secret_access_key: <%= CGI.unescape(URI.parse(ENV['S3_DATA_URL']).password) %>
+  region:            <%= CGI.parse(URI.parse(ENV['S3_DATA_URL']).query)['region'].first %>
+  bucket:            <%= URI.parse(ENV['S3_DATA_URL']).path[1..-1] %>
+  endpoint:          https://<%= URI.parse(ENV['S3_DATA_URL']).host %>
